@@ -7,10 +7,12 @@ export default class UsersController {
     const users = await User.all()
     return response.status(200).json({ data: users })
   }
+
   async show({ request, response }: HttpContext) {
     const user = await User.find(request.param('id'))
     return response.status(200).json({ data: user })
   }
+
   async update({ request, response }: HttpContext) {
     try {
       const validatedData = await request.validateUsing(updateUserValidator)
@@ -23,6 +25,7 @@ export default class UsersController {
       response.badRequest({ messages: 'Impossible to update the user', error: error.messages })
     }
   }
+
   async destroy({ request, response }: HttpContext) {
     try {
       const user = await User.findOrFail(request.param('id'))
