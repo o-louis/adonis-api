@@ -1,6 +1,13 @@
 import User from '#models/user'
 import { loginValidator, registerValidator } from '#validators/auth'
+import { AccessToken } from '@adonisjs/auth/access_tokens'
 import type { HttpContext } from '@adonisjs/core/http'
+
+type TAuthenticateUser =
+  | (User & {
+      currentAccessToken: AccessToken
+    })
+  | undefined
 
 export default class AuthController {
   async register({ request }: HttpContext) {
@@ -32,7 +39,7 @@ export default class AuthController {
     }
   }
 
-  static ensureOwnership(authenticatedUser, resourceOwnerId: number): boolean {
-    return authenticatedUser.id === resourceOwnerId
+  static ensureOwnership(authenticatedUser: TAuthenticateUser, resourceOwnerId: number): boolean {
+    return authenticatedUser?.id === resourceOwnerId
   }
 }
