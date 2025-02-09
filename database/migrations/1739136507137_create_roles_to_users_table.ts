@@ -1,5 +1,3 @@
-// HOW TO ADD A COLUMN TO AN EXISTING TABLE
-
 import { BaseSchema } from '@adonisjs/lucid/schema'
 
 import { UserRole } from '#models/user'
