@@ -14,14 +14,19 @@ export default class AuthController {
     const data = await request.validateUsing(registerValidator)
     const user = await User.create(data)
     await user.save()
-    return User.accessTokens.create(user)
+
+    const token = await User.accessTokens.create(user, ['*'], { expiresIn: '30 days' })
+    const tokenJson = token.toJSON()
+    return { token: tokenJson.token, expiresAt: tokenJson.expiresAt }
   }
 
   async login({ request }: HttpContext) {
     const { email, password } = await request.validateUsing(loginValidator)
     const user = await User.verifyCredentials(email, password)
 
-    return User.accessTokens.create(user)
+    const token = await User.accessTokens.create(user, ['*'], { expiresIn: '30 days' })
+    const tokenJson = token.toJSON()
+    return { token: tokenJson.token, expiresAt: tokenJson.expiresAt }
   }
 
   async logout({ auth }: HttpContext) {
