@@ -13,12 +13,6 @@ const UsersController = () => import('#controllers/users_controller')
 
 const AuthController = () => import('#controllers/auth_controller')
 
-router.get('/', async () => {
-  return {
-    hello: 'world',
-  }
-})
-
 router
   .group(() => {
     // SIGN IN
@@ -38,3 +32,10 @@ router
       .use(middleware.auth())
   })
   .prefix('/api')
+
+// UNKOWN ROUTE
+router.any('*', async ({ response }) => {
+  return response.status(404).json({
+    error: 'Route not found. Please check the URL.',
+  })
+})
