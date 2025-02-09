@@ -1,4 +1,4 @@
-import User from '#models/user'
+import User, { UserRole } from '#models/user'
 import { loginValidator, registerValidator } from '#validators/auth'
 import { AccessToken } from '@adonisjs/auth/access_tokens'
 import type { HttpContext } from '@adonisjs/core/http'
@@ -41,5 +41,9 @@ export default class AuthController {
 
   static ensureOwnership(authenticatedUser: TAuthenticateUser, resourceOwnerId: number): boolean {
     return authenticatedUser?.id === resourceOwnerId
+  }
+
+  static ensureAdmin(authenticatedUser: TAuthenticateUser): boolean {
+    return authenticatedUser?.role === UserRole.ADMIN
   }
 }
